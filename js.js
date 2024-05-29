@@ -1,26 +1,30 @@
 function generateList(array) {
-    let result = "<ul>\n";
-    
+    // Створюємо елемент <ul>
+    let ul = document.createElement('ul');
+
+    // Перебираємо елементи в масиві
     array.forEach(item => {
-        result += "    <li>";
-        
+        // Створюємо елемент <li>
+        let li = document.createElement('li');
+
+        // Перевіряємо, чи поточний елемент є масивом
         if (Array.isArray(item)) {
-            result += "<ul>\n";
-            item.forEach(subItem => {
-                result += "            <li>" + subItem + "</li>\n";
-            });
-            result += "        </ul>\n";
+            // Якщо елемент - масив, рекурсивно викликаємо generateList для нього
+            li.appendChild(generateList(item));
         } else {
-            result += item;
+            // Якщо елемент - число, додаємо його як текст в <li>
+            li.textContent = item;
         }
-        
-        result += "</li>\n";
+
+        // Додаємо <li> до <ul>
+        ul.appendChild(li);
     });
-    
-    result += "</ul>\n";
-    return result;
+
+    // Повертаємо створений <ul>
+    return ul;
 }
 
 // Приклад використання:
-let array = [1, 2, [1.1, 1.2, 1.3], 3];
-console.log(generateList(array));
+let array = [1, 2, 3, [1.1, 1.2, 1.3], 4, [4.4, 4.5]];
+let listContainer = document.getElementById('list-container'); // Отримуємо контейнер, куди будемо додавати список
+listContainer.appendChild(generateList(array)); // Додаємо список до контейнера
